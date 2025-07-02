@@ -29,7 +29,7 @@ flowchart TD
   end
 
   subgraph Governance
-    OpenMeta[Open Metadata] --> |Catalog &amp; Lineage| MinIO
+    Nessie[Open Metadata] --> |Catalog &amp; Lineage| MinIO
   end
 ```
 
