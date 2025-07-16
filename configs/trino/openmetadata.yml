@@ -1,0 +1,9 @@
+openMetadataServerConfig:
+  databaseConnection:
+    host: om-mysql
+    port: 3306
+    scheme: mysql
+    username: openmetadata
+    password: openmetadata
+    database: openmetadata_db
+    driverClass: com.mysql.cj.jdbc.Driver
