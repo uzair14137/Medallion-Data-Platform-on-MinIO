@@ -93,6 +93,7 @@ services:
       - "8082:8080"
     volumes:
       - ./configs/spark/spark-defaults.conf:/opt/bitnami/spark/conf/spark-defaults.conf:ro
+      - ./scripts/jobs:/opt/bitnami/spark/jobs:ro
   spark-worker:
     image: bitnami/spark:3.5.0
     depends_on: [spark-master]
@@ -101,6 +102,9 @@ services:
       SPARK_MODE: worker
       SPARK_MASTER_URL: spark://spark-master:7077
       SPARK_RPC_AUTHENTICATION_ENABLED: "no"
+    volumes:
+      - ./scripts/jobs:/opt/bitnami/spark/jobs:ro
+
 
   # ─── ClickHouse (optional low-latency OLAP) ──────────────────
   clickhouse:
