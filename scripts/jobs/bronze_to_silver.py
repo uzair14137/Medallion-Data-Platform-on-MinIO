@@ -8,11 +8,11 @@ BRONZE_ROOT = "s3a://bronze-raw/social"     # no trailing slash
 SILVER_ROOT = "s3a://silver-curated"
 NESSIE_URI  = "http://nessie:19120/api/v1"
 TOPICS      = [                            # folders you’ve seen in MinIO
-    "twitter-posts",
-    "twitter-followers",
-    "twitter-following",
-    "twitter-profile-information",
-    "keybase-twitter",
+    "facebook-posts",
+    "facebook-followers",
+    "facebook-following",
+    "facebook-profile-information",
+    "keybase-facebook",
 ]
 # ------------------------------------------------------------------------
 
@@ -26,7 +26,10 @@ spark = (SparkSession.builder
          .getOrCreate())
 
 spark.sql("SET spark.sql.session.timeZone = UTC")
-spark.sql("CREATE NAMESPACE IF NOT EXISTS nessie.silver")
+# (optionally list & drop sub-namespaces too)
+
+
+spark.sql("CREATE NAMESPACE IF NOT EXISTS nessie.curated")
 spark.sql("USE nessie")
 for topic in TOPICS:
     # --- 1. build a recursive glob:  topic=<topic>/year=*/month=*/day=*/*.json
@@ -46,7 +49,7 @@ for topic in TOPICS:
      .withColumn("topic", F.lit(topic))
      .withColumn("ingest_ts", F.to_timestamp("ingest_ts"))
      .withColumn("date_hour", F.date_format("ingest_ts", "yyyy-MM-dd-HH"))
-     .writeTo(f"nessie.silver.{topic.replace('-', '_')}")
+     .writeTo(f"nessie.curated.{topic.replace('-', '_')}")
      .using("iceberg")
      .tableProperty("format-version", "2")
      .tableProperty("write.format.default", "parquet")

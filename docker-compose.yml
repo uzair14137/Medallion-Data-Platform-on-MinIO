@@ -11,6 +11,8 @@ volumes:
   superset_db:
   airflow_logs:
   superset_data:
+  om_es_data:
+  om_db:
 
 services:
   # ─── Zookeeper + Kafka ─────────────────────────────────────────
@@ -193,6 +195,8 @@ services:
       - ./airflow/dags:/opt/airflow/dags
       - airflow_logs:/opt/airflow/logs
     command: scheduler
+
+
 
 
 

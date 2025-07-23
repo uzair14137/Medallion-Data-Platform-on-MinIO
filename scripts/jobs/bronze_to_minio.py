@@ -5,13 +5,14 @@ spark = (SparkSession.builder
          .getOrCreate())
 
 # 1 — subscribe to many topics at once
-#     • subscribe = exact list  (“twitter-posts,ig-posts,tiktok-posts”)  OR
+#     • subscribe = exact list  (“facebook-posts,ig-posts,tiktok-posts”)  OR
 #     • subscribePattern = ".*-posts"        # regex
 raw = (spark.readStream
         .format("kafka")
-        .option("kafka.bootstrap.servers", "10.100.102.137:9092")
-        .option("subscribe","twitter-posts,twitter-following,twitter-followers,twitter-profile-information,keybase-twitter")   # any topic that ends -posts
+        .option("kafka.bootstrap.servers", "kafka:9092")
+        .option("subscribe","facebook-posts,facebook-following,facebook-followers,facebook-profile-information,keybase-facebook")   # any topic that ends -posts
         .option("startingOffsets", "earliest")
+        .option("failOnDataLoss", "false")
         .load())
 
 # 2 — add routing columns
